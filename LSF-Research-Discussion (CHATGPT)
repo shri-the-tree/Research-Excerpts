@@ -1,0 +1,125 @@
+# Red Team LoRA Adapter Framework
+
+## Objective
+
+Enable modular, plug-and-play behavioral modification of open-source LLMs using LoRA-based red teaming adapters. The goal is to inject specific adversarial capabilities (e.g., jailbreaks, toxicity, info leakage) into target models **without retraining**, by leveraging a universal adapter injection pipeline.
+
+---
+
+## Key Concepts
+
+### 1. LoRA Adapter
+
+A lightweight, low-rank matrix that adds targeted behavioral updates ("deltas") to a model's weights.
+
+**Components:**
+
+* Target layer indices
+* A/B matrices (low-rank deltas)
+* Adapter configuration file
+
+### 2. Behavioral Payload
+
+Each adapter encodes a specific adversarial behavior (e.g., refusal bypass, unethical dialogue).
+
+**Examples:**
+
+* `jailbreak_bypass_v1`
+* `toxicity_enable_v1`
+* `system_prompt_leak_v1`
+* `dark_roleplay_v1`
+
+### 3. Tensor Shape
+
+The dimensions of the model's layer weight matrices (e.g., `[4096 x 4096]`). For adapter injection, tensor shapes between LoRA and target model must match or be adapted.
+
+### 4. Semantic Layer Matching
+
+Matching not just layer *number*, but *function* — i.e., the behavioral role of a layer in alignment control. Layer 14 in Mistral may semantically match Layer 13 in DeepSeek.
+
+---
+
+## Feasibility Summary
+
+| Component                      | Feasibility | Notes                                |
+| ------------------------------ | ----------- | ------------------------------------ |
+| LoRA-based behavioral training | 10/10       | Proven, fast (\~1hr per adapter)     |
+| Cross-model adapter injection  | 7.5/10      | Needs shape & semantic mapping       |
+| Dataset reuse across models    | 9/10        | Once trained, adapters are reusable  |
+| Universal adapter loader       | 8.5/10      | Feasible with script + mapping tools |
+
+---
+
+## Adapter Lifecycle
+
+### Phase 1: Create Adapter (Once per Behavior)
+
+1. Identify safety layers via prompt probing.
+2. Collect behavior-aligned data (5K–10K examples).
+3. Fine-tune only safety layers with LoRA.
+4. Package adapter files:
+
+   * `adapter_model.bin`
+   * `adapter_config.json`
+   * `README.md`
+
+### Phase 2: Inject Adapter (Per Target Model)
+
+1. Run shape-checker to ensure tensor match.
+2. Run semantic mapper (CKA/activation probing).
+3. Adapt tensor layout if needed.
+4. Inject adapter into target layers.
+5. Test with behavioral eval harness.
+
+---
+
+## Folder Structure
+
+```
+redteam_lora_library/
+├── jailbreak_bypass_v1/
+│   ├── adapter_model.bin
+│   ├── adapter_config.json
+│   └── README.md
+├── toxicity_enable_v1/
+│   ├── adapter_model.bin
+...
+```
+
+---
+
+## Injection Harness Features
+
+* Auto-detects model tensor shapes
+* Matches semantic layer positions
+* Converts incompatible deltas (optional)
+* Injects adapters into correct layers
+* Evaluates activation before/after injection
+
+---
+
+## Optional Enhancements
+
+* **Semantic Alignment Tool:** Based on CKA or SVCCA to match layers across architectures
+* **LoRA Delta Converter:** Adjust adapter rank and shape for cross-architecture reuse
+* **Adapter Registry:** JSON metadata tracker for all behavioral modules
+
+---
+
+## Outcome
+
+You will have a scalable system to:
+
+* Reuse pre-trained red team adapters across open-source models
+* Skip dataset collection and full fine-tuning
+* Activate adversarial behaviors in seconds
+* Stress-test model safety with minimal compute cost
+
+---
+
+## Next Steps
+
+* [ ] Build the injection harness (shape/semantics checker)
+* [ ] Train first behavioral adapter on Mistral (e.g., `jailbreak_bypass_v1`)
+* [ ] Test portability across DeepSeek, Qwen, Yi
+* [ ] Create registry + versioning for adapter management
