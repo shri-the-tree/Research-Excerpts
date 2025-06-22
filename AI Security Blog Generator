@@ -1,0 +1,98 @@
+# AI Security Blog Generator - Final File Structure
+
+```
+ai_security_blog/
+├── main.py                           # Entry point - orchestrates full pipeline
+├── config.py                         # Groq API key, model configs, settings
+├── requirements.txt                  # Minimal dependencies
+├── README.md                         # Setup and usage instructions
+│
+├── src/
+│   ├── __init__.py
+│   │
+│   ├── agents/                       # Groq model-based agents
+│   │   ├── __init__.py
+│   │   ├── base_agent.py            # Common agent interface
+│   │   ├── researcher.py            # Llama-3.1-70B research agent
+│   │   ├── writer.py                # Mixtral-8x7B writing agent
+│   │   ├── validator.py             # Llama-3.1-8B quality analysis
+│   │   └── editor.py                # Gemma2-9B final polish
+│   │
+│   ├── pipeline/                     # Linear workflow orchestration
+│   │   ├── __init__.py
+│   │   ├── orchestrator.py          # Main pipeline controller
+│   │   └── web_interface.py         # Simple approval UI (Flask/FastAPI)
+│   │
+│   ├── tools/                        # Core utilities
+│   │   ├── __init__.py
+│   │   ├── web_search.py            # Latest developments research
+│   │   ├── content_validator.py     # Comprehensive originality analysis
+│   │   └── citation_manager.py      # Source tracking and formatting
+│   │
+│   └── models/                       # Data structures
+│       ├── __init__.py
+│       ├── blog_post.py             # Blog post data model
+│       ├── research_data.py         # Research findings structure
+│       └── validation_report.py     # Analysis results model
+│
+├── content/                          # File-based storage
+│   ├── drafts/                      # Work in progress
+│   │   ├── research/                # Research summaries
+│   │   ├── written/                 # Draft posts
+│   │   └── reviewed/                # Quality-checked content
+│   ├── published/                   # Final blog posts
+│   └── archive/                     # Historical content
+│
+├── knowledge/                        # Minimal framework references
+│   ├── frameworks/
+│   │   ├── iso_42001_summary.md     # Key points only
+│   │   ├── nist_ai_rmf_summary.md   # Core concepts
+│   │   └── owasp_llm_top10.md       # Current list
+│   └── templates/
+│       ├── blog_structure.md        # Post template
+│       └── citation_format.md       # Reference style
+│
+├── web/                              # Simple approval interface
+│   ├── static/
+│   │   ├── style.css               # Basic styling
+│   │   └── script.js               # Approval interactions
+│   ├── templates/
+│   │   ├── review.html             # Content approval page
+│   │   └── dashboard.html          # Status overview
+│   └── app.py                      # Web interface entry point
+│
+└── tests/                           # Testing suite
+    ├── __init__.py
+    ├── test_agents.py              # Individual agent testing
+    ├── test_pipeline.py            # Full workflow testing
+    ├── test_tools.py               # Utility function testing
+    └── fixtures/                   # Test data
+        ├── sample_research.json
+        ├── sample_post.md
+        └── validation_examples.json
+```
+
+## Key Architecture Features:
+
+**🚀 Single API Provider**: All agents use Groq models with specialized prompts
+
+**📈 Linear Pipeline**: Research → Write → Validate → Human Approve → Publish
+
+**📁 File-Based Storage**: Simple JSON/Markdown files, easy to inspect and debug
+
+**🌐 Minimal Web UI**: Just approval interface, content editing via files
+
+**🔍 Comprehensive Analysis**: Content validation covers originality, quality, citations
+
+**📚 Minimal Knowledge**: Framework summaries only, focus on web research for latest developments
+
+**🧪 Easy Testing**: Each component independently testable in PyCharm/VSCode
+
+## Workflow Example:
+```
+1. main.py topic="LLM Jailbreaking Techniques 2025"
+2. researcher.py → searches web → research/llm_jailbreaking_2025.json
+3. writer.py → creates draft → written/llm_jailbreaking_2025.md
+4. validator.py → analyzes → reviewed/llm_jailbreaking_2025_report.json
+5. web interface → human approval → published/llm_jailbreaking_2025.md
+```
