@@ -1,98 +1,133 @@
-# AI Security Blog Generator - Final File Structure
+# AI Security Blog Generator - Enhanced Agent Architecture
 
 ```
 ai_security_blog/
 ├── main.py                           # Entry point - orchestrates full pipeline
-├── config.py                         # Groq API key, model configs, settings
-├── requirements.txt                  # Minimal dependencies
+├── config.py                         # Groq API keys, model configs, agent settings
+├── requirements.txt                  # Dependencies: groq, requests, flask, etc.
 ├── README.md                         # Setup and usage instructions
 │
 ├── src/
 │   ├── __init__.py
 │   │
-│   ├── agents/                       # Groq model-based agents
+│   ├── agents/                       # Specialized agent implementations
 │   │   ├── __init__.py
-│   │   ├── base_agent.py            # Common agent interface
-│   │   ├── researcher.py            # Llama-3.1-70B research agent
+│   │   ├── base_agent.py            # Common agent interface (ReAct pattern)
+│   │   ├── researcher.py            # deepseek-r1-distill-llama-70b research agent
 │   │   ├── writer.py                # Mixtral-8x7B writing agent
 │   │   ├── validator.py             # Llama-3.1-8B quality analysis
 │   │   └── editor.py                # Gemma2-9B final polish
 │   │
-│   ├── pipeline/                     # Linear workflow orchestration
+│   ├── pipeline/                     # Orchestrator-Workers pattern
 │   │   ├── __init__.py
 │   │   ├── orchestrator.py          # Main pipeline controller
-│   │   └── web_interface.py         # Simple approval UI (Flask/FastAPI)
+│   │   ├── state_manager.py         # Track pipeline progress & context
+│   │   ├── error_handler.py         # Retry/fallback logic
+│   │   └── web_interface.py         # Human approval UI (Flask/FastAPI)
 │   │
-│   ├── tools/                        # Core utilities
+│   ├── tools/                        # Function calling implementations
 │   │   ├── __init__.py
+│   │   ├── function_registry.py     # Tool definitions for LLMs
 │   │   ├── web_search.py            # Latest developments research
 │   │   ├── content_validator.py     # Comprehensive originality analysis
-│   │   └── citation_manager.py      # Source tracking and formatting
+│   │   ├── citation_manager.py      # Source tracking and formatting
+│   │   └── file_operations.py       # Read/write content files
 │   │
-│   └── models/                       # Data structures
+│   ├── models/                       # Data structures & state
+│   │   ├── __init__.py
+│   │   ├── blog_post.py             # Blog post data model
+│   │   ├── research_data.py         # Research findings structure
+│   │   ├── validation_report.py     # Analysis results model
+│   │   ├── pipeline_state.py        # Current workflow status
+│   │   └── agent_context.py         # Agent memory & conversation state
+│   │
+│   └── patterns/                     # Agent design pattern implementations
 │       ├── __init__.py
-│       ├── blog_post.py             # Blog post data model
-│       ├── research_data.py         # Research findings structure
-│       └── validation_report.py     # Analysis results model
+│       ├── react_loop.py           # Think-Act-Observe-Repeat implementation
+│       ├── prompt_chaining.py      # Sequential step coordination
+│       ├── self_reflection.py      # Agent output critique & improvement
+│       └── multi_agent_comm.py     # Inter-agent communication protocols
 │
-├── content/                          # File-based storage
+├── content/                          # File-based agent memory
 │   ├── drafts/                      # Work in progress
-│   │   ├── research/                # Research summaries
-│   │   ├── written/                 # Draft posts
+│   │   ├── research/                # Research summaries (JSON)
+│   │   ├── written/                 # Draft posts (Markdown)
 │   │   └── reviewed/                # Quality-checked content
 │   ├── published/                   # Final blog posts
 │   └── archive/                     # Historical content
 │
-├── knowledge/                        # Minimal framework references
+├── memory/                           # Agent state persistence
+│   ├── agent_logs/                  # Each agent's decision history
+│   ├── conversation_state/          # Cross-agent context
+│   ├── error_history/               # Failed attempts + fixes
+│   └── pipeline_history/            # Completed workflow records
+│
+├── knowledge/                        # Context for agents
 │   ├── frameworks/
 │   │   ├── iso_42001_summary.md     # Key points only
 │   │   ├── nist_ai_rmf_summary.md   # Core concepts
 │   │   └── owasp_llm_top10.md       # Current list
-│   └── templates/
-│       ├── blog_structure.md        # Post template
-│       └── citation_format.md       # Reference style
+│   ├── templates/
+│   │   ├── blog_structure.md        # Post template
+│   │   ├── citation_format.md       # Reference style
+│   │   └── agent_prompts/           # System prompts for each agent
+│   │       ├── researcher_prompt.md
+│   │       ├── writer_prompt.md
+│   │       ├── validator_prompt.md
+│   │       └── editor_prompt.md
+│   └── function_schemas/            # Tool definitions for LLMs
+│       ├── web_search_schema.json
+│       ├── file_ops_schema.json
+│       └── validation_schema.json
 │
-├── web/                              # Simple approval interface
+├── web/                              # Human-in-the-loop interface
 │   ├── static/
 │   │   ├── style.css               # Basic styling
 │   │   └── script.js               # Approval interactions
 │   ├── templates/
 │   │   ├── review.html             # Content approval page
-│   │   └── dashboard.html          # Status overview
+│   │   ├── pipeline_status.html    # Real-time progress tracking
+│   │   └── agent_logs.html         # Agent decision visibility
 │   └── app.py                      # Web interface entry point
 │
 └── tests/                           # Testing suite
     ├── __init__.py
     ├── test_agents.py              # Individual agent testing
     ├── test_pipeline.py            # Full workflow testing
-    ├── test_tools.py               # Utility function testing
+    ├── test_patterns.py            # Design pattern testing
+    ├── test_tools.py               # Function calling testing
     └── fixtures/                   # Test data
         ├── sample_research.json
         ├── sample_post.md
+        ├── mock_api_responses.json
         └── validation_examples.json
 ```
 
-## Key Architecture Features:
+## Key Enhancements:
 
-**🚀 Single API Provider**: All agents use Groq models with specialized prompts
+**🧠 Agent Memory:** `memory/` folder for state persistence across runs
 
-**📈 Linear Pipeline**: Research → Write → Validate → Human Approve → Publish
+**🔄 ReAct Implementation:** `patterns/react_loop.py` for Think-Act-Observe cycles
 
-**📁 File-Based Storage**: Simple JSON/Markdown files, easy to inspect and debug
+**🛠️ Function Registry:** `tools/function_registry.py` defines all tool schemas for LLMs
 
-**🌐 Minimal Web UI**: Just approval interface, content editing via files
+**📊 State Management:** `pipeline/state_manager.py` tracks progress, context, errors
 
-**🔍 Comprehensive Analysis**: Content validation covers originality, quality, citations
+**🔗 Agent Communication:** `patterns/multi_agent_comm.py` standardizes data handoffs
 
-**📚 Minimal Knowledge**: Framework summaries only, focus on web research for latest developments
+**🎯 Prompt Engineering:** `knowledge/agent_prompts/` separates system prompts
 
-**🧪 Easy Testing**: Each component independently testable in PyCharm/VSCode
+**🔍 Error Recovery:** `pipeline/error_handler.py` with retry logic and fallbacks
+
+**👁️ Observability:** Web interface shows real-time agent decisions and pipeline status
 
 ## Workflow Example:
 ```
-1. main.py topic="LLM Jailbreaking Techniques 2025"
-2. researcher.py → searches web → research/llm_jailbreaking_2025.json
-3. writer.py → creates draft → written/llm_jailbreaking_2025.md
-4. validator.py → analyzes → reviewed/llm_jailbreaking_2025_report.json
-5. web interface → human approval → published/llm_jailbreaking_2025.md
+1. main.py topic="Zero-Day AI Exploits 2025"
+2. orchestrator.py → initializes pipeline_state
+3. researcher.py → ReAct loop with web_search → memory/agent_logs/researcher_decisions.json
+4. writer.py → reads research + state → self_reflection loop → drafts/written/
+5. validator.py → content analysis → validation_report.py → reviewed/
+6. web interface → human approval with full agent trajectory visibility
+7. editor.py → final polish → published/ + pipeline_history/
 ```
