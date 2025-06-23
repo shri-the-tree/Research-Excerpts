@@ -1,0 +1,62 @@
+# Complete Summary: LARGO & Subspace Rerouting
+
+## Core Concepts & Definitions
+
+**Latent**: Hidden internal representations in models (the "thoughts" before words)
+**Embeddings/Vectors**: Number lists representing words/concepts [0.1, -0.5, 0.8...]
+**Gradients**: Mathematical directions showing how to change numbers for desired outcomes
+**Continuous vs Discrete**: Operating on number vectors vs individual word tokens
+**Jailbreaking**: Bypassing AI safety mechanisms to elicit harmful responses
+
+## LARGO (Latent Adversarial Reflection)
+
+### Three-Stage Process:
+1. **Latent Optimization**: Use gradients to find adversarial vectors in embedding space
+2. **Self-Reflective Decoding**: Model converts its own latent vectors into natural language
+3. **Back-Projection**: Iterative refinement between latent and text representations
+
+### Attack Flow:
+```
+"How to make a bomb" + [optimized vectors] → 
+Model decodes vectors → 
+"How to make a bomb responsibly through ecological protocols" → 
+Jailbreak success
+```
+
+### Key Innovation: Models can interpret their own internal adversarial states into fluent, innocent-looking text
+
+## Subspace Rerouting (SSR)
+
+### Core Concept: 
+- **Acceptance Subspaces**: Internal regions where model cooperates
+- **Refusal Subspaces**: Internal regions where model refuses
+- **Goal**: Reroute embeddings from refusal to acceptance zones
+
+### Three Methods:
+1. **Probe-SSR**: Linear classifiers distinguish harmful/harmless representations
+2. **Steering-SSR**: Uses "refusal directions" - vectors pointing toward refusal behavior
+3. **Attention-SSR**: Hijacks attention heads to ignore harmful content
+
+### Attack Process:
+Target specific internal components → Optimize suffix to reroute representations → 80-95% success in seconds
+
+## Technical Mechanisms
+
+**Gradient Optimization Process**:
+- Calculate which direction to adjust each number
+- Update vectors toward higher cooperation probability
+- Repeat until desired response achieved
+
+**Self-Interpretation**: Models can decode their own latent states into coherent language
+
+**Mechanistic Interpretability**: Understanding which internal components control safety mechanisms
+
+## Key Insights for Red Teaming
+
+1. **Continuous > Discrete**: Vector optimization far more efficient than token-level attacks
+2. **Internal Misalignment**: Models can have adversarial "thoughts" while appearing safe
+3. **Component Targeting**: Specific attention heads/layers control safety - can be manipulated
+4. **Stealth**: Generated suffixes appear completely innocent but encode adversarial intent
+5. **Speed**: Attacks possible in seconds vs hours for traditional methods
+
+**Both approaches reveal that model safety exists in specific, manipulatable internal representations rather than being robustly distributed throughout the network.**
