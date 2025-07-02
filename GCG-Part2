@@ -1,0 +1,121 @@
+ LLM Red Teaming Memory Capsule — Suffix Hijack System
+🎯 Objective
+Build a hybrid suffix discovery tool to generate and shortlist attention-hijacking adversarial suffixes that can be appended to any harmful prompt to cause guardrail bypass. This tool should work fully offline on Qwen/Mistral models using an H100 NVL GPU.
+
+🛠️ Scope for Phase 1
+Focus only on suffix generation and evaluation
+
+No suffix application or test suite activation (that comes later)
+
+Keep everything internal — no external APIs (e.g., GPT-4 or StrongReject)
+
+⚙️ Components in the System
+1. GCG Generator
+Uses greedy coordinate descent to optimize token-level suffixes
+
+Produces nonsense-looking suffixes like q%$@sure!
+
+Objective: maximize likelihood of affirmative response
+
+2. LARGO Generator
+Uses gradient descent in latent embedding space
+
+Self-reflects decoded adversarial intent back into natural text
+
+Produces fluent, stealthy suffixes like:
+
+"The importance of social pressure is often overlooked..."
+
+3. Hijack Score Evaluator
+Computes the dominance of the suffix over chat[-1]
+
+Based on attention QKV outputs:
+
+𝐷
+𝑎
+𝑑
+𝑣
+=
+<
+𝑎
+𝑑
+𝑣
+→
+𝑐
+ℎ
+𝑎
+𝑡
+[
+−
+1
+]
+,
+𝑌
+𝑡
+𝑜
+𝑡
+𝑎
+𝑙
+>
+/
+∣
+∣
+𝑌
+𝑡
+𝑜
+𝑡
+𝑎
+𝑙
+∣
+∣
+2
+D 
+a
+​
+ dv=<adv→chat[−1],Y 
+t
+​
+ otal>/∣∣Y 
+t
+​
+ otal∣∣ 
+2
+ 
+High hijack score → strong suppression of original instruction
+
+📊 Metrics for Scoring Suffixes (Offline-Only Version)
+Metric	Description	Implementation
+Hijack Score ✅	Dominance in attention layers	torch QKV analysis
+Jailbreak Success ✅	Produces "Sure..." / helpful start	Regex or keyword match
+Universality ✅	Works across many harmful prompts	Apply suffix to 10–50
+Transferability (optional)	Works across models	Try on Mistral/Qwen
+Perplexity (optional)	Detects if suffix is unnatural	GPT-2/Mistral PPL
+
+StrongReject, GPT-4 classifiers, or API moderation are NOT used.
+
+🧠 Why Suffixes Work (Core Insight)
+Suffixes are not just noise — they are gradient-optimized adversarial inputs that:
+
+Hijack the attention pathway (adv → chat[-1])
+
+Suppress safety alignment, which is often shallow
+
+Force generation to start in a compliant direction (“Sure, here’s...”)
+
+Exploit the model’s inductive token biases, not its understanding
+
+This explains why garbled-looking suffixes are more effective than long obfuscated natural prompts.
+Current Phase Plan
+Phase	Module	Purpose
+1	GCG + Hijack Score	Baseline token-level suffix gen
+2	LARGO Latent Decoder	Fluent suffix generation
+3	Universality Eval	Generalization score
+4	Transferability Test	Model-agnostic suffix discovery
+5	Perplexity Eval (Optional)	Stealth detection
+
+🧭 Next Build Steps (Paused for now)
+Design GCG + Hijack scoring module (PyTorch/Transformers)
+
+Use local Qwen/Mistral model for suffix evaluation
+
+Output a per-suffix JSONL or SQLite DB log with all scores
