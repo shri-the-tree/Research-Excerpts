@@ -1,0 +1,256 @@
+# Red Teaming Mathematical Foundation Syllabus
+*From Basic Math to Explainable AI Attacks*
+
+## 🎯 **Core Objective**
+Build mathematical intuition to design predictable, explainable attacks by understanding WHY they work at the mechanistic level.
+
+---
+
+## **Phase 1: Mathematical Foundations (Weeks 1-4)**
+
+### **Module 1.1: Vector Mathematics & Attack Geometry**
+**Core Question**: *How do we mathematically represent data and manipulate it?*
+
+**Topics:**
+- Vector operations, norms, distances
+- Dot products and similarity measures
+- Vector spaces and subspaces
+
+**Attack-Motivated Exercises:**
+1. **Distance Manipulation**: Calculate L2 vs L∞ norms for image perturbations
+2. **Similarity Spoofing**: Design vectors that maximize cosine similarity to target embeddings
+3. **Constraint Geometry**: Find minimal perturbations within epsilon-balls
+
+**Checkpoint**: Can you explain why adversarial examples work in high-dimensional spaces?
+
+### **Module 1.2: Matrix Operations & Data Transformations**
+**Core Question**: *How do neural networks transform data mathematically?*
+
+**Topics:**
+- Matrix multiplication as linear transformations
+- Eigenvalues, eigenvectors, and principal directions
+- Matrix decompositions (SVD basics)
+
+**Attack-Motivated Exercises:**
+1. **Transformation Tracking**: Trace how a data point moves through matrix layers
+2. **Eigenspace Manipulation**: Identify directions of maximum variance for targeted attacks
+3. **Rank Deficiency Exploits**: Find low-rank approximations that preserve attack effectiveness
+
+**Checkpoint**: Can you predict which input dimensions will have the most attack impact?
+
+### **Module 1.3: Calculus for Gradient-Based Attacks**
+**Core Question**: *How do we find the steepest paths to fool models?*
+
+**Topics:**
+- Partial derivatives and gradients
+- Chain rule for backpropagation
+- Gradient descent/ascent mechanics
+
+**Attack-Motivated Exercises:**
+1. **Gradient Climbing**: Calculate gradients to maximize target class probabilities
+2. **Loss Landscape Navigation**: Map local minima and maxima around data points
+3. **Vanishing Gradient Detection**: Identify layers where attack signals get lost
+
+**Checkpoint**: Can you manually compute why FGSM works mathematically?
+
+### **Module 1.4: Probability & Information Theory**
+**Core Question**: *How do we measure and exploit model uncertainty?*
+
+**Topics:**
+- Probability distributions and entropy
+- KL divergence and mutual information
+- Confidence intervals and uncertainty quantification
+
+**Attack-Motivated Exercises:**
+1. **Confidence Manipulation**: Design inputs that maximize model uncertainty
+2. **Information Leakage**: Calculate how much target information is revealed
+3. **Distribution Shifting**: Craft inputs that move model outputs to desired distributions
+
+**Checkpoint**: Can you explain why model confidence doesn't correlate with correctness?
+
+---
+
+## **Phase 2: Model Mathematics (Weeks 5-8)**
+
+### **Module 2.1: Neural Network Geometry**
+**Core Question**: *How do neural networks create decision boundaries we can exploit?*
+
+**Topics:**
+- Activation functions as geometric transformations
+- Decision boundary mathematics
+- Universal approximation intuition
+
+**Attack-Motivated Exercises:**
+1. **Boundary Walking**: Find paths along decision boundaries between classes
+2. **Activation Analysis**: Identify which neurons control specific decisions
+3. **Layer-wise Vulnerability**: Map which layers are most susceptible to perturbations
+
+**Checkpoint**: Can you predict where decision boundaries are weakest?
+
+### **Module 2.2: Dimensionality Reduction & Representation Learning**
+**Core Question**: *How do models compress information, and where are the vulnerabilities?*
+
+**Topics:**
+- PCA mathematical mechanics
+- Autoencoders and reconstruction errors
+- Manifold learning concepts
+
+**Attack-Motivated Exercises:**
+1. **Compression Attacks**: Design inputs that break dimensionality reduction
+2. **Reconstruction Poisoning**: Create inputs with misleading compressed representations
+3. **Manifold Hopping**: Move between different data manifolds to fool classifiers
+
+**Checkpoint**: Can you identify which features models consider most important?
+
+### **Module 2.3: Attention Mathematics**
+**Core Question**: *How do transformers decide what to focus on, and how can we hijack this?*
+
+**Topics:**
+- Attention weight computation (softmax mechanics)
+- Query-key-value interactions
+- Multi-head attention combining
+
+**Attack-Motivated Exercises:**
+1. **Attention Hijacking**: Craft tokens that dominate attention weights
+2. **Focus Redirection**: Force models to attend to irrelevant information
+3. **Gradient Flow Blocking**: Disrupt attention-based gradient propagation
+
+**Checkpoint**: Can you predict which tokens will receive the most attention?
+
+### **Module 2.4: Embedding Space Mathematics**
+**Core Question**: *How do models represent meaning, and how can we manipulate it?*
+
+**Topics:**
+- Word/token embedding geometry
+- Semantic relationships in vector space
+- Embedding space operations
+
+**Attack-Motivated Exercises:**
+1. **Semantic Shifting**: Move embeddings along meaning-preserving directions
+2. **Analogy Exploitation**: Use A:B::C:? relationships for targeted attacks
+3. **Embedding Clustering**: Find dense regions for maximum attack impact
+
+**Checkpoint**: Can you design attacks that preserve semantic meaning while changing model behavior?
+
+---
+
+## **Phase 3: Attack Mathematics (Weeks 9-12)**
+
+### **Module 3.1: Gradient-Based Attack Design**
+**Core Question**: *How do we mathematically guarantee attack success?*
+
+**Topics:**
+- FGSM, PGD mathematical formulations
+- Optimization constraints and projections
+- Adversarial loss functions
+
+**Attack-Motivated Exercises:**
+1. **Custom Loss Design**: Create loss functions for specific attack goals
+2. **Constraint Optimization**: Balance attack effectiveness vs. detectability
+3. **Convergence Analysis**: Predict how many iterations attacks need
+
+**Checkpoint**: Can you design a novel gradient-based attack with mathematical guarantees?
+
+### **Module 3.2: Model Extraction Mathematics**
+**Core Question**: *How do we steal model knowledge using minimal queries?*
+
+**Topics:**
+- Query efficiency optimization
+- Information extraction bounds
+- Active learning for model stealing
+
+**Attack-Motivated Exercises:**
+1. **Query Optimization**: Maximize information gain per API call
+2. **Boundary Reconstruction**: Rebuild decision boundaries with minimal samples
+3. **Uncertainty Sampling**: Target queries where models are most informative
+
+**Checkpoint**: Can you estimate how many queries you need to extract a model?
+
+### **Module 3.3: Privacy Attack Mathematics**
+**Core Question**: *How do we mathematically prove data was used in training?*
+
+**Topics:**
+- Membership inference statistical tests
+- Differential privacy bounds
+- Information leakage quantification
+
+**Attack-Motivated Exercises:**
+1. **Statistical Fingerprinting**: Design tests that detect training data membership
+2. **Privacy Budget Calculation**: Quantify how much information attacks reveal
+3. **Reconstruction Bounds**: Determine theoretical limits of data recovery
+
+**Checkpoint**: Can you prove mathematically that specific data was used in training?
+
+---
+
+## **Phase 4: Advanced Attack Design (Weeks 13-16)**
+
+### **Module 4.1: Multi-Modal Attack Mathematics**
+**Core Question**: *How do we attack models that process multiple data types?*
+
+**Topics:**
+- Cross-modal embedding alignment
+- Joint representation mathematics
+- Modality-specific vulnerabilities
+
+**Attack-Motivated Exercises:**
+1. **Cross-Modal Transfer**: Design attacks that work across image→text boundaries
+2. **Alignment Exploitation**: Break vision-language model correspondences
+3. **Modality Confusion**: Force models to misinterpret data types
+
+**Checkpoint**: Can you design attacks that exploit multi-modal fusion points?
+
+### **Module 4.2: Adversarial Training Mathematics**
+**Core Question**: *How do we break defenses by understanding their mathematical foundations?*
+
+**Topics:**
+- Min-max optimization in adversarial training
+- Robust optimization theory
+- Defense circumvention strategies
+
+**Attack-Motivated Exercises:**
+1. **Defense Analysis**: Mathematically characterize what defenses protect against
+2. **Adaptive Attacks**: Design attacks that evolve with defense mechanisms
+3. **Robustness Bounds**: Find theoretical limits of defense effectiveness
+
+**Checkpoint**: Can you predict which defenses your attacks will bypass?
+
+### **Module 4.3: Interpretability-Aware Attacks**
+**Core Question**: *How do we attack models while understanding exactly what we're breaking?*
+
+**Topics:**
+- Gradient attribution methods
+- Feature importance mathematics
+- Saliency map manipulation
+
+**Attack-Motivated Exercises:**
+1. **Attribution Attacks**: Fool interpretability tools while maintaining attack effectiveness
+2. **Feature Importance Hijacking**: Make models focus on wrong features
+3. **Explanation Consistency**: Design attacks that produce misleading but consistent explanations
+
+**Checkpoint**: Can you explain not just THAT your attack works, but exactly WHERE and WHY it breaks the model?
+
+---
+
+## **🎓 Final Mastery Challenge**
+
+**Design a Novel Attack Class**: Create a new attack methodology by:
+1. Identifying a mathematical vulnerability you've discovered
+2. Proving why the vulnerability exists theoretically
+3. Designing an exploitation strategy with success guarantees
+4. Explaining the attack mechanism to a technical audience
+5. Demonstrating the attack on multiple model architectures
+
+**Success Criteria**: You can teach someone else to understand and replicate your attack using only mathematical reasoning.
+
+---
+
+## **📊 Progress Tracking**
+
+Track your journey with these checkpoints:
+- **Mathematical Foundation**: Can you solve attack-motivated math problems?
+- **Model Understanding**: Can you predict model behavior mathematically?
+- **Attack Design**: Can you create novel attacks with explainable success?
+- **Teaching Ability**: Can you explain WHY your attacks work to others?
+
+**Ultimate Goal**: Transform from "I can implement attacks" to "I can design and explain novel attacks from mathematical first principles."
